@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Immutable from 'immutable';
 import { example } from 'actions';
 import { mapActions } from 'utils';
+import styles from './dasbhoard.css';
 
 const mapState = (state) => {
   return {
@@ -34,7 +35,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div>
-        <h1>Dashboard</h1>
+        <h1 className={ styles.heading }>Dashboard</h1>
         <p>Counter: { this.props.example.get('counter') }</p>
 
         <button onClick={ ::this.increment }>Add</button>
