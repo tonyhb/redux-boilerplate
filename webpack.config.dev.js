@@ -34,12 +34,33 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'eslint'
     }],
-    loaders: [{
-      test: /\.jsx?$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, 'src')
-    }]
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        loaders: ['babel'],
+        include: path.join(__dirname, 'src')
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
+      }
+    ]
   },
+  postcss: [
+    require('postcss-cssnext')({
+      browsers: 'last 2 versions',
+      features: {
+        // https://github.com/robwierzbowski/node-pixrem/issues/40
+        rem: false
+      },
+      import: true,
+      compress: false,
+      messages: true
+    }),
+    require('postcss-nested'),
+    require('lost')
+  ],
   debug: true,
   profile: true,
   eslint: {
