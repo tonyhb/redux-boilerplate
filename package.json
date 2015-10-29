@@ -1,12 +1,12 @@
 {
-  "name": "redux-boilerplate",
-  "version": "0.0.0",
+  "name": "redux-boilerplate", "version": "0.0.0",
   "description": "Boilerplate for Docker apps",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ENV=development node dev-server.js",
-    "build": "ENV=development ./node_modules/.bin/webpack --progress -cv --config ./webpack.config.dev.js"
+    "watch": "ENV=development ./node_modules/.bin/webpack --progress -wcv --config ./webpack.config.dev.js",
+    "build": "ENV=production ./node_modules/.bin/webpack --progress -cv --config ./webpack.config.js"
   },
   "author": "Tony Holdstock-Brown",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "eslint": "^1.7.3",
     "eslint-loader": "^1.1.0",
     "eslint-plugin-react": "^3.6.3",
+    "extract-text-webpack-plugin": "^0.8.2",
     "lost": "^6.6.2",
     "postcss": "^5.0.10",
     "postcss-constants": "^0.1.1",

@@ -1,7 +1,3 @@
-// Webpack config for:
-// - Development
-// - Extracting CSS into dist/bundle.css
-// - No hotloading
 require('babel/register');
 
 var path = require('path');
@@ -15,10 +11,7 @@ var resolve = {
 };
 
 module.exports = {
-  devtool: 'inline-source-map',
   entry: [
-    'webpack-dev-server/client?http://localhost:3000', // WebpackDevServer host and port
-    'webpack/hot/only-dev-server',
     './src/scripts/index'
   ],
   output: {
@@ -66,8 +59,8 @@ module.exports = {
     require('postcss-nested'),
     require('lost')
   ],
-  debug: true,
-  profile: true,
+  debug: false,
+  profile: false,
   eslint: {
     failOnError: false
   }
