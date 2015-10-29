@@ -28,6 +28,7 @@ module.exports = {
     publicPath: '/public/' // Used in webpack-dev-server as the directory for bundle.js
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin('bundle.css', { allChunks: true }),
     new webpack.NoErrorsPlugin()
   ],
