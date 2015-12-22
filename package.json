@@ -1,5 +1,6 @@
 {
-  "name": "redux-boilerplate", "version": "0.0.0",
+  "name": "redux-boilerplate",
+  "version": "0.0.0",
   "description": "Boilerplate for Docker apps",
   "main": "index.js",
   "scripts": {
@@ -36,12 +37,12 @@
     "webpack-dev-server": "^1.12.1"
   },
   "dependencies": {
-    "history": "^1.12.5",
+    "history": "1.13.1",
     "immutable": "^3.7.5",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
-    "react-router": "^1.0.0-rc3",
+    "react-router": "^1.0.2",
     "redux": "^3.0.4",
     "reselect": "^2.0.0"
   }
