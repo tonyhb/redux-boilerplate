@@ -2,7 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import css from 'react-css-modules';
-import styles from './styles.css';
+import styles from './app.css';
 
 @css(styles)
 export default class App extends Component {
