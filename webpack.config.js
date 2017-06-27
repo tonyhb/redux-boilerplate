@@ -1,67 +1,147 @@
-require('babel/register');
+const webpack = require('webpack');
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isProd = nodeEnv === 'production';
 
-var resolve = {
-  extensions: ['', '.js', '.jsx', 'jsx', 'js', '.css'],
-  fallback: path.join(__dirname, 'node_modules'),
-  root: path.join(__dirname, 'src', 'scripts'),
-};
-
-module.exports = {
-  entry: [
-    './src/scripts/index'
-  ],
+const common = {
+  devtool: isProd ? 'hidden-source-map' : 'eval',
+  context: __dirname,
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    sourceMapFileName: 'bundle.map',
-    publicPath: '/public/' // Used in webpack-dev-server as the directory for bundle.js
+    path: path.join(__dirname, './build'),
+    publicPath: '/assets/',
+    filename: '[name].js',
   },
-  plugins: [
-    new ExtractTextPlugin('bundle.css', { allChunks: true }),
-    new webpack.NoErrorsPlugin()
-  ],
-  resolve: resolve,
-  resolveLoader: resolve,
+
+  // devServer allows us to run webpack-dev-server with real, in place hot
+  // module reloading.
+  //
+  // HOST env variable:
+  // If you're running inside a virtual machine set the HOST environment
+  // variable to the IP of your VM.
+  devServer: {
+    hot: true,
+    host: "0.0.0.0",
+    allowedHosts: [process.env.HOST],
+    contentBase: './build/',
+    publicPath: `https://${process.env.HOST}:8080/assets/`,
+    historyApiFallback: true,
+    stats: {
+      assets: false,
+      chunks: false,
+      colors: false,
+      modules: false, // hides JS and CSS info
+    },
+  },
+
   module: {
-    preLoaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'eslint'
-    }],
-    loaders: [
+    rules: [
+      // preloader so we bail fast with syntax errors
       {
-        test: /\.jsx?$/,
-        loaders: ['babel'],
-        include: path.join(__dirname, 'src')
+        enforce: "pre",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: ["eslint-loader"],
       },
+      // JS should be the first loader for dev-server.js
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: [
+          'babel-loader',
+        ]
+      },
+      // extract CSS as a separate file for cacheability.
       {
         test: /\.css$/,
-        exclude: /node_modules/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
-      }
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+                modules: true,
+                localIdentName: '[local]', // injected into extracttext; given from postcss
+              },
+            },
+            { loader: 'postcss-loader' },
+          ]
+        })
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    modules: [
+      // everything in `src` should overwrite node_modules repos
+      path.resolve('./src'),
+      'node_modules'
     ]
   },
-  postcss: [
-    require('postcss-cssnext')({
-      browsers: 'last 2 versions',
-      features: {
-        // https://github.com/robwierzbowski/node-pixrem/issues/40
-        rem: false
-      },
-      import: true,
-      compress: false,
-      messages: true
+  plugins: [
+    new ExtractTextPlugin({
+      filename: 'styles.css',
+      allChunks: true,
     }),
-    require('postcss-nested'),
-    require('lost')
-  ],
-  debug: false,
-  profile: false,
-  eslint: {
-    failOnError: false
-  }
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }),
+    new webpack.DefinePlugin({
+      config: {
+        PORT: process.env.PORT || 3000,
+      },
+      'process.env': {
+        NODE_ENV: JSON.stringify(nodeEnv),
+      }
+    }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: isProd,
+      output: {
+        comments: false
+      },
+      sourceMap: false
+    }),
+    // name modules (vs. numbers) for better HMR logs
+    new webpack.NamedModulesPlugin(),
+  ]
 };
+
+if (isProd) {
+  // Breaks HMR; only enable for smaller filesizes in prod
+  common.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+}
+
+// export two webpack configs; one for the client and one for the server.
+module.exports = [
+  Object.assign({}, common, {
+    entry: {
+      client: ['./src/entry.client.js'],
+    },
+  }),
+  Object.assign({}, common, {
+    entry: {
+      server: ['./src/entry.server.js'],
+    },
+    target: 'node',
+    node: {
+      // prevent __dirname from rewriting to '/' for assets:
+      // https://github.com/webpack/webpack/issues/1599
+      __dirname: false,
+      __filename: false,
+    },
+    plugins: common.plugins.slice().concat([
+      // debug < 2.6 references these which causes an error with SSR
+      new webpack.DefinePlugin({
+        window: {},
+        navigator: false,
+        document: false,
+      }),
+    ]),
+  }),
+];
+
+

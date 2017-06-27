@@ -1,0 +1,27 @@
+/* stylelint-disable */
+@import 'sanitize.css/sanitize.css';
+/* stylelint-enable */
+
+:root {
+  font: 16px/1.5 'Proxima Nova', 'Open Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, arial, sans-serif;
+  color: #211f1e;
+}
+
+.header {
+  .dashboard {
+    display: block;
+    height: 100%;
+    width: 195px;
+    margin: 0 10px;
+    text-indent: -99999rem;
+    opacity: .5;
+    transition: all .25s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  background: #211f1e;
+  height: 60px;
+}
