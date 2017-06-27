@@ -1,22 +1,15 @@
 {
-  "stage": 0,
-  "optional": ["runtime"],
-  "env": {
-    // In development allow hot reloading
-    "development": {
-      "plugins": ["react-transform"],
-      "extra": {
-        "react-transform": {
-          "transforms": [{
-            "transform": "react-transform-hmr",
-            "imports": ["react"],
-            "locals": ["module"]
-          }, {
-            "transform": "react-transform-catch-errors",
-            "imports": ["react", "redbox-react"]
-          }]
-        }
-      }
-    }
-  }
+  "presets": [
+    ["es2015", { "modules": false }],
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    "react-hot-loader/babel",
+    ["react-css-modules", {
+      generateScopedName: '[name]__[local]--[hash:base64:5]', // injected into react classnames
+    }],
+    "transform-class-properties",
+    "transform-decorators-legacy",
+  ]
 }
