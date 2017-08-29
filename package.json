@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "babel-plugin-react-css-modules": "^3.0.0",
+    "empty": "^0.10.1",
     "express": "^4.15.3",
     "morgan": "^1.8.2",
     "react": "15.6.1",

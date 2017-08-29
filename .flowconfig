@@ -1,9 +1,17 @@
 [ignore]
 .*/node_modules/fbjs/.*
 .*/node_modules/stylelint/.*
+.*\.json
+.*\.css
+.*\.css\.json
 
 [include]
 
 [libs]
+./src/
 
 [options]
+module.system=node
+module.file_ext=.css
+module.name_mapper='.*\(.css\)' -> 'empty/object'
+esproposal.decorators=ignore
