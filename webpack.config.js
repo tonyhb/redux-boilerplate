@@ -9,8 +9,8 @@ const common = {
   devtool: isProd ? 'hidden-source-map' : 'eval',
   context: __dirname,
   output: {
-    path: path.join(__dirname, './build'),
-    publicPath: '/assets/',
+    path: path.join(__dirname, './build/assets'),
+    publicPath: '/',
     filename: '[name].js',
   },
 
@@ -49,6 +49,7 @@ const common = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: [
+          !isProd && 'react-hot-loader/webpack',
           'babel-loader',
         ]
       },
