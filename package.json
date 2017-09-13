@@ -6,7 +6,7 @@
   "scripts": {
     "prettier": "prettier --write -l --trailing-comma all src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dev-server.js"
+    "start": "node -r dotenv/config dev-server.js"
   },
   "author": "",
   "license": "ISC",
@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "babel-plugin-react-css-modules": "^3.0.0",
+    "dotenv": "^4.0.0",
     "empty": "^0.10.1",
     "express": "^4.15.3",
     "morgan": "^1.8.2",

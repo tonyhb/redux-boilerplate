@@ -7,12 +7,12 @@ const [client, server] = require('./webpack.config');
 client.entry.client.unshift(
   'react-hot-loader/patch',
   `webpack-dev-server/client?http://${process.env.HOST}:8080/`,
-  'webpack/hot/only-dev-server',
+  'webpack/hot/only-dev-server'
 );
 // add HMR
 client.plugins.push(
   new webpack.HotModuleReplacementPlugin(),
-  new WriteFilePlugin(),
+  new WriteFilePlugin()
 );
 
 const proxy =  {
