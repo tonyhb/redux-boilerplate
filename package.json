@@ -3,18 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "emotion": "^9.1.1",
-    "kea": "^0.28.2",
+    "emotion": "9.2.6",
+    "kea": "0.28.3",
     "kea-thunk": "^0.3.2",
-    "prop-types": "^15.6.1",
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1",
-    "react-loadable": "^5.3.1",
+    "prop-types": "15.6.2",
+    "react": "16.4.2",
+    "react-dom": "16.4.2",
+    "react-loadable": "5.4.0",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
-    "recompose": "^0.26.0",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
+    "recompose": "0.28.2",
+    "redux": "4.0.0",
+    "redux-thunk": "2.3.0",
     "reselect": "^3.0.1"
   },
   "scripts": {
@@ -26,9 +26,9 @@
     "test": "react-app-rewired test --env=jsdom"
   },
   "devDependencies": {
-    "babel-plugin-emotion": "^9.1.0",
-    "flow-bin": "^0.69.0",
-    "prettier": "^1.12.0",
-    "react-app-rewired": "^1.5.0"
+    "babel-plugin-emotion": "9.2.6",
+    "flow-bin": "0.78.0",
+    "prettier": "1.14.0",
+    "react-app-rewired": "1.5.2"
   }
 }
