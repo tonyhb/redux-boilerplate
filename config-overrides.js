@@ -1,5 +1,5 @@
 const path = require("path");
-const { injectBabelPlugin } = require("react-app-rewired");
+const { addBabelPlugin } = require("customize-cra");
 
 const overrides = [
   // ensure that "src" resolves locally without having to type relative paths
@@ -8,11 +8,14 @@ const overrides = [
     ...config,
     resolve: {
       ...config.resolve,
-      modules: config.resolve.modules.concat([path.resolve(".")]),
+      alias: {
+        ...config.alias,
+        src: path.resolve(__dirname, "src"),
+      },
     },
   }),
   // use babel-plugin-emotion
-  config => injectBabelPlugin(["emotion", { hoist: true }], config),
+  config => addBabelPlugin(["emotion", { hoist: true }])(config),
 ];
 
 module.exports = (defaultConfig, env) =>
